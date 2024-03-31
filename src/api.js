@@ -25,3 +25,10 @@ export const getRoom = ({ queryKey }) => {
   const [, roomPk] = queryKey;
   return axiosInstance.get(`rooms/${roomPk}`).then(response => response.data);
 };
+
+export const getRoomReviews = ({ queryKey }) => {
+  const [, roomPk] = queryKey;
+  return axiosInstance
+    .get(`rooms/${roomPk}/reviews`)
+    .then(response => response.data);
+};
