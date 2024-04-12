@@ -24,10 +24,11 @@ const RoomDetail = () => {
     queryKey: [`rooms`, roomPk],
     queryFn: getRoom,
   });
-  const { isLoading: reviewsLoading, data: reviewsData } = useQuery({
+  const { data: reviewsData } = useQuery({
     queryKey: ['rooms', roomPk, 'reviews'],
     queryFn: getRoomReviews,
   });
+  // console.log(data.photos);
   return (
     <Box
       mt={10}

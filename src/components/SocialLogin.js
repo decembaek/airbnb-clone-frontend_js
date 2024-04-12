@@ -18,7 +18,13 @@ const SocialLogin = () => {
         <Divider />
       </HStack>
       <VStack w={'100%'}>
-        <Button w={'100%'} colorScheme="gray" leftIcon={<FaGithub />}>
+        <Button
+          as={'a'}
+          href="https://github.com/login/oauth/authorize?client_id=52023d9e05ce9e891654&scope=read:user,user:email"
+          w={'100%'}
+          colorScheme="gray"
+          leftIcon={<FaGithub />}
+        >
           Continue with Github
         </Button>
         <Button w={'100%'} colorScheme="yellow" leftIcon={<FaComment />}>
@@ -30,3 +36,9 @@ const SocialLogin = () => {
 };
 
 export default SocialLogin;
+
+// User ---> Github
+// Github ---> Website / url 주소로 정보 보내줌 / 127.0.0.1/confirm-gh?token=토큰정보
+
+// 토큰정보 ----> 백엔드 Django
+// Django ----> Github API
