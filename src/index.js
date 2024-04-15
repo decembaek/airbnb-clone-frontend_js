@@ -1,5 +1,5 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
-import React, { StrictMode } from 'react';
+import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
@@ -12,14 +12,14 @@ const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-  <StrictMode>
-    <QueryClientProvider client={client}>
-      <ChakraProvider theme={theme}>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <RouterProvider router={router} />
-      </ChakraProvider>
-    </QueryClientProvider>
-  </StrictMode>
+  // <StrictMode>
+  <QueryClientProvider client={client}>
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  </QueryClientProvider>
+  // </StrictMode>
 );
 
 // // If you want your app to work offline and load faster, you can change

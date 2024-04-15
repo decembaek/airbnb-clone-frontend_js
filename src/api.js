@@ -55,3 +55,16 @@ export const logOut = () => {
   });
   return res.data;
 };
+
+export const githubLogin = async code => {
+  const response = await axiosInstance.post(
+    `/users/github`,
+    { code },
+    {
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken') || '',
+      },
+    }
+  );
+  return response.status;
+};

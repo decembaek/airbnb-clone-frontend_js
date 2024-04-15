@@ -102,7 +102,7 @@ const Header = () => {
           ) : (
             <Menu>
               <MenuButton>
-                <Avatar name={user.name} src={user.src} size={'md'} />
+                <Avatar name={user.name} src={user.avatar} size={'md'} />
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={onLogOut}>Log out</MenuItem>
