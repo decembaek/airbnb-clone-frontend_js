@@ -15,14 +15,14 @@ import {
   MenuItem,
   useToast,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { FaAirbnb, FaMoon, FaSun } from 'react-icons/fa';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 import { Link } from 'react-router-dom';
 import useUser from '../lib/useUser';
 import { logOut } from '../api';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Header = () => {
   const { userLoading, user, isLoggedIn } = useUser();
@@ -42,24 +42,35 @@ const Header = () => {
   const logoColor = useColorModeValue('red.500', 'red.200');
   const Icon = useColorModeValue(FaMoon, FaSun);
   const toast = useToast();
+  const toastId = useRef();
   const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: logOut,
+    onMutate: () => {
+      toastId.current = toast({
+        title: 'Login out...',
+        description: 'See you later!',
+        status: 'loading',
+        position: 'bottom-right',
+        // duration: 2000,
+        // isClosable: true,
+      });
+    },
+    onSuccess: () => {
+      if (toastId.current) {
+        queryClient.refetchQueries(['me']);
+        toast.update(toastId.current, {
+          status: 'success',
+          title: 'Done!',
+          description: 'See you later',
+          duration: 1000,
+        });
+      }
+    },
+  });
   const onLogOut = async () => {
-    const toastId = toast({
-      title: 'Login out...',
-      description: 'See you later!',
-      status: 'loading',
-      position: 'bottom-right',
-      // duration: 2000,
-      // isClosable: true,
-    });
-    await logOut();
-    queryClient.refetchQueries(['me']);
-    toast.update(toastId, {
-      status: 'success',
-      title: 'Done!',
-      description: 'See you later',
-      duration: 1000,
-    });
+    mutation.mutate();
+    // await logOut();
   };
   return (
     <Stack

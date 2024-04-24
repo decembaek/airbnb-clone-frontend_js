@@ -47,8 +47,8 @@ export const getMe = async () => {
   return res.data;
 };
 
-export const logOut = () => {
-  const res = axiosInstance.post(`users/log-out`, null, {
+export const logOut = async () => {
+  const res = await axiosInstance.post(`users/log-out`, null, {
     headers: {
       'X-CSRFToken': Cookies.get('csrftoken') || '',
     },
@@ -60,6 +60,50 @@ export const githubLogin = async code => {
   const response = await axiosInstance.post(
     `/users/github`,
     { code },
+    {
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken') || '',
+      },
+    }
+  );
+  return response.status;
+};
+
+export const kakaoLogin = async code => {
+  const response = await axiosInstance.post(
+    `/users/kakao`,
+    { code },
+    {
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken') || '',
+      },
+    }
+  );
+  return response.status;
+};
+
+export const usernameLogin = async ({ username, password }) => {
+  const response = await axiosInstance.post(
+    `/users/log-in`,
+    { username, password },
+    {
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken') || '',
+      },
+    }
+  );
+  return response.data;
+};
+
+export const usernameSignUp = async ({ name, email, username, password }) => {
+  const response = await axiosInstance.post(
+    `/users/`,
+    {
+      name,
+      email,
+      username,
+      password,
+    },
     {
       headers: {
         'X-CSRFToken': Cookies.get('csrftoken') || '',
