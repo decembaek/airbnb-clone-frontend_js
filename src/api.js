@@ -112,3 +112,18 @@ export const usernameSignUp = async ({ name, email, username, password }) => {
   );
   return response.status;
 };
+
+export const getAmenities = () =>
+  axiosInstance.get('rooms/amenities').then(response => response.data);
+
+export const getCategories = () =>
+  axiosInstance.get('categories').then(response => response.data);
+
+export const uploadRoom = async variables => {
+  const response = await axiosInstance.post(`rooms/`, variables, {
+    headers: {
+      'X-CSRFToken': Cookies.get('csrftoken') || '',
+    },
+  });
+  return response.data;
+};

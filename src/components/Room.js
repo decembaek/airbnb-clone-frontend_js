@@ -9,11 +9,25 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaStar, FaRegHeart } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaStar, FaRegHeart, FaCamera } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Room = ({ imageUrl, name, rating, city, country, price, pk }) => {
+const Room = ({
+  imageUrl,
+  name,
+  rating,
+  city,
+  country,
+  price,
+  pk,
+  isOwner,
+}) => {
   const gray = useColorModeValue('gray.600', 'gray.300');
+  const navigate = useNavigate();
+  const onCameraClick = event => {
+    event.preventDefault();
+    navigate(`/rooms/${pk}/photos`);
+  };
   return (
     <Link to={`/rooms/${pk}`}>
       <VStack spacing={-1.5} alignItems={'flex-start'}>
@@ -25,8 +39,9 @@ const Room = ({ imageUrl, name, rating, city, country, price, pk }) => {
             top={0}
             right={0}
             color={'white'}
+            onClick={onCameraClick}
           >
-            <FaRegHeart size={20} />
+            {isOwner ? <FaCamera size={20} /> : <FaRegHeart size={20} />}
           </Button>
         </Box>
         <Grid gap={2} templateColumns={'6fr 1fr'}>
