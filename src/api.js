@@ -127,3 +127,23 @@ export const uploadRoom = async variables => {
   });
   return response.data;
 };
+
+export const getUploadURL = async () => {
+  const response = await axiosInstance.post(`medias/photos/get-url`, null, {
+    headers: {
+      'X-CSRFToken': Cookies.get('csrftoken') || '',
+    },
+  });
+  return response.data;
+};
+
+export const uploadImage = async ({ file, uploadURL }) => {
+  const form = new FormData();
+  form.append('file', file[0]);
+  const response = await axios.post(uploadURL, form, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
