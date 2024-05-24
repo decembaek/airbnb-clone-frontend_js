@@ -41,7 +41,11 @@ const Room = ({
             color={'white'}
             onClick={onCameraClick}
           >
-            {isOwner ? <FaCamera size={20} /> : <FaRegHeart size={20} />}
+            {isOwner ? (
+              <FaCamera size={20} color="red" />
+            ) : (
+              <FaRegHeart size={20} />
+            )}
           </Button>
         </Box>
         <Grid gap={2} templateColumns={'6fr 1fr'}>

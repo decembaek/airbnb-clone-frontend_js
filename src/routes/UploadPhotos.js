@@ -6,20 +6,42 @@ import {
   Heading,
   Input,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import ProtectedPage from '../components/ProtectedPage';
 import HostOnlyPage from '../components/HostOnlyPage';
 import { useMutation } from '@tanstack/react-query';
-import { getUploadURL, uploadImage } from '../api';
+import { createPhoto, getUploadURL, uploadImage } from '../api';
 
 const UploadPhotos = () => {
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch, reset } = useForm();
+  const { roomPk } = useParams();
+  const toast = useToast();
+  const createPhotoMutaion = useMutation({
+    mutationFn: createPhoto,
+    onSuccess: () => {
+      toast({
+        status: 'success',
+        title: 'Image uploaded!',
+        description: 'Feel free to upload more image',
+      });
+      reset();
+    },
+  });
   const uploadImageMutaion = useMutation({
     mutationFn: uploadImage,
-    onSuccess: data => {
-      console.log(data);
+    onSuccess: ({ result }) => {
+      // console.log(data);
+      // console.log(result);
+      if (roomPk) {
+        createPhotoMutaion.mutate({
+          description: 'I love React',
+          file: `https://imagedelivery.net/XQCgjO9eBv5XEmR7VN84hQ/${result.id}/public`,
+          roomPk,
+        });
+      }
     },
   });
   const uploadURLMutaion = useMutation({
@@ -31,7 +53,6 @@ const UploadPhotos = () => {
       });
     },
   });
-  const { roomPk } = useParams();
   const onSubmit = data => {
     uploadURLMutaion.mutate();
   };
@@ -57,7 +78,16 @@ const UploadPhotos = () => {
               <FormControl>
                 <Input {...register('file')} type="file" accept="image/*" />
               </FormControl>
-              <Button type="submit" w="full" colorScheme={'red'}>
+              <Button
+                isLoading={
+                  createPhotoMutaion.isLoading ||
+                  uploadImageMutaion.isLoading ||
+                  uploadURLMutaion.isLoading
+                }
+                type="submit"
+                w="full"
+                colorScheme={'red'}
+              >
                 Upload photos
               </Button>
             </VStack>

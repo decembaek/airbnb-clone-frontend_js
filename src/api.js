@@ -147,3 +147,15 @@ export const uploadImage = async ({ file, uploadURL }) => {
   });
   return response.data;
 };
+
+export const createPhoto = ({ description, file, roomPk }) => {
+  axiosInstance.post(
+    `rooms/${roomPk}/photos`,
+    { description, file },
+    {
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken') || '',
+      },
+    }
+  );
+};

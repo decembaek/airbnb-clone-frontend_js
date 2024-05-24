@@ -28,6 +28,9 @@ const RoomDetail = () => {
     queryKey: ['rooms', roomPk, 'reviews'],
     queryFn: getRoomReviews,
   });
+  if (isLoading) {
+    console.log(data);
+  }
   // console.log(data.photos);
   return (
     <Box
